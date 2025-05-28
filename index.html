@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Info despre dispozitivul tău</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Date despre dispozitivul tău</h2>
+    <p><strong>Adresa IP:</strong> <span id="ip">Loading...</span></p>
+    <p><strong>Browser:</strong> <span id="browser"></span></p>
+    <p><strong>Sistem de operare:</strong> <span id="os"></span></p>
+    <p><strong>Rezoluție ecran:</strong> <span id="screen"></span></p>
+  </div>
+
+  <script>
+    // Detectează IP-ul
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('ip').textContent = data.ip;
+      });
+
+    // Detectează browserul și OS-ul
+    const ua = navigator.userAgent;
+    document.getElementById('browser').textContent = navigator.appName + " (" + navigator.appVersion + ")";
+    document.getElementById('os').textContent = navigator.platform;
+    document.getElementById('screen').textContent = screen.width + "x" + screen.height;
+  </script>
+</body>
+</html>
