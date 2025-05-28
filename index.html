@@ -1,34 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
-  <title>Info despre dispozitivul tău</title>
+  <meta charset="UTF-8">
+  <title>Informații despre dispozitivul tău</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    body { font-family: sans-serif; background: #f4f4f4; padding: 30px; }
+    .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; max-width: 600px; margin: auto; }
+    h1 { text-align: center; }
+    p { line-height: 1.6; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>Date despre dispozitivul tău</h2>
-    <p><strong>Adresa IP:</strong> <span id="ip">Loading...</span></p>
-    <p><strong>Browser:</strong> <span id="browser"></span></p>
-    <p><strong>Sistem de operare:</strong> <span id="os"></span></p>
-    <p><strong>Rezoluție ecran:</strong> <span id="screen"></span></p>
+    <h1>Info despre dispozitiv</h1>
+    <p><strong>IP:</strong> <span id="ip">...</span></p>
+    <p><strong>Țară:</strong> <span id="country">...</span></p>
+    <p><strong>Oraș:</strong> <span id="city">...</span></p>
+    <p><strong>Browser:</strong> <span id="browser">...</span></p>
+    <p><strong>Sistem de operare:</strong> <span id="os">...</span></p>
+    <p><strong>Rezoluție ecran:</strong> <span id="resolution">...</span></p>
+    <p><strong>Limbă:</strong> <span id="language">...</span></p>
+    <p><strong>Fus orar:</strong> <span id="timezone">...</span></p>
   </div>
 
   <script>
-    // Detectează IP-ul
-    fetch('https://api.ipify.org?format=json')
+    // IP și locație
+    fetch('https://ipapi.co/json/')
       .then(res => res.json())
       .then(data => {
         document.getElementById('ip').textContent = data.ip;
+        document.getElementById('country').textContent = data.country_name;
+        document.getElementById('city').textContent = data.city;
+        document.getElementById('timezone').textContent = data.timezone;
       });
 
-    // Detectează browserul și OS-ul
+    // Browser și sistem
     const ua = navigator.userAgent;
-    document.getElementById('browser').textContent = navigator.appName + " (" + navigator.appVersion + ")";
-    document.getElementById('os').textContent = navigator.platform;
-    document.getElementById('screen').textContent = screen.width + "x" + screen.height;
+    const browser = (() => {
+      if (ua.includes("Firefox")) return "Firefox";
+      if (ua.includes("Edg")) return "Microsoft Edge";
+      if (ua.includes("Chrome")) return "Chrome";
+      if (ua.includes("Safari")) return "Safari";
+      return "Alt browser";
+    })();
+
+    const os = (() => {
+      if (ua.includes("Windows")) return "Windows";
+      if (ua.includes("Mac")) return "MacOS";
+      if (ua.includes("Linux")) return "Linux";
+      if (/Android/.test(ua)) return "Android";
+      if (/iPhone|iPad/.test(ua)) return "iOS";
+      return "Alt sistem";
+    })();
+
+    document.getElementById('browser').textContent = browser;
+    document.getElementById('os').textContent = os;
+    document.getElementById('resolution').textContent = `${screen.width} x ${screen.height}`;
+    document.getElementById('language').textContent = navigator.language;
   </script>
 </body>
 </html>
